@@ -1,0 +1,11 @@
+
+<ul>
+    <li>
+        <a href=@{UserR}>
+            Cadastrar Usuario
+    <li>
+        <a href=@{ProdutoR}>
+            Cadastro de Produtos
+    <li>
+        <a href=@{ListaProdR}>
+            Lista de Produtos       

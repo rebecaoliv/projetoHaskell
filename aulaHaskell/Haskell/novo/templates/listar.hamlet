@@ -1,0 +1,27 @@
+<table>
+    <thead>
+        <tr>
+            <th>
+                Nome
+            <th>
+                Marca
+            <th>
+                Preço
+            <th>
+                Descrição
+            <th>
+    <tbody>
+        $forall Entity pid prod <- produtos
+            <tr>
+                <td>
+                    <a href=@{CatalogoR pid}>
+                        #{produtoNome prod}
+                <td>
+                    #{produtoMarca prod}
+                <td>
+                    #{produtoPreco prod}
+                <td>
+                    #{produtoDescr prod}
+                <td>
+                    <form method=post action=@{ApagarProdR pid}>
+                        <input type="submit" value="X">

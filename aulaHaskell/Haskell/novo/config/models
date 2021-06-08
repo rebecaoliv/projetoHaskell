@@ -1,0 +1,21 @@
+User
+    nome   Text
+    email  Text
+    senha  Text
+    UniqueEmail  email
+    deriving Show
+
+Fornecedor
+    userId UserId
+    cnpj       Text
+    endereco   Text
+    telefone   Text
+    produto    Text
+    deriving Show
+
+Produto
+    nome    Text
+    marca   Text
+    preco   Double
+    descr   Textarea
+    deriving Show

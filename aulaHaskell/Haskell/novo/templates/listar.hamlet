@@ -8,7 +8,7 @@
             <th>
                 Preço
             <th>
-                Descrição
+                Descriçãoo
             <th>
     <tbody>
         $forall Entity pid prod <- produtos

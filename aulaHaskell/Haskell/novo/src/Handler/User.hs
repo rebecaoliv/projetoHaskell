@@ -2,33 +2,32 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE QuasiQuotes #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE QuasiQuotes #-}
 module Handler.User where
 
 import Import
 import Handler.Auxiliar
 
-formUser :: Form (User, Text)
-formUser = renderDivs $ (,) 
+formLogin :: Form (User, Text)
+formLogin = renderDivs $ (,) 
     <$> (User 
         <$> areq textField "E-mail: "  Nothing 
-        <*> areq textField "Nome: "    Nothing
         <*> areq passwordField "Senha:  "  Nothing
-                )
-    <*> areq passwordField  "Confirmacao: " Nothing
+        )
+    <*> areq passwordField  "Cofirmacao: " Nothing
 
 getUserR :: Handler Html
 getUserR = do
-    (widget,_) <- generateFormPost formUser
+    (widget,_) <- generateFormPost formLogin
     msg <- getMessage
     defaultLayout (formWidget widget msg UserR "Cadastrar")
 
 postUserR :: Handler Html
 postUserR = do
-    ((result,_),_) <- runFormPost formUser
+    ((result,_),_) <- runFormPost formLogin
     case result of
-        FormSuccess (user@(User nome email senha), conf) -> do
+        FormSuccess (user@(User email senha), conf) -> do
             userExiste <- runDB $ getBy (UniqueEmail email)
             case userExiste of
                     Just _ -> do
@@ -51,4 +50,4 @@ postUserR = do
                                     SENHA E CONFIRMACAO DIFERENTES!
                             |]
                             redirect UserR
-        _ -> redirect HomeR 
+        _ -> redirect HomeR

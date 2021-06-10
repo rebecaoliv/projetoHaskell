@@ -5,9 +5,26 @@
 
 / HomeR GET
 
-/user UserR GET POST
+/usuario UserR GET POST
 
-/produto ProdutoR GET POST
-/produtos               ListaProdR GET
-/catalogo/#ProdutoId    CatalogoR  GET
-/produtos/#ProdutoId/apagar  ApagarProdR POST
+/login AutR       GET POST
+/logout SairR     POST
+/admin AdminR     GET
+
+/cadastrar-produto ProdutoR GET POST
+/lista-de-produtos                           ListarProdR GET
+/catalogo-de-produtos/#ProdutoId    CatalogoProdR  GET
+/produtos/#ProdutoId/apagar         ApagarProdR POST
+/produto/editar/#ProdutoId          EditarProdR GET POST
+
+/cadastrar-fornecedor FornecedorR GET POST
+/lista-de-fornecedores                                  ListarFornR GET
+/catalogo-de-fornecedores/#FornecedorId        CatalogoFornR GET
+/fornecedores/#FornecedorId/apagar             ApagarFornR POST
+/fornecedor/editar/#FornecedorId               EditarFornR GET POST
+
+/cadastrar-funcionario FuncionarioR GET POST
+/lista-de-funcionarios                                  ListarFuncR GET
+/catalogo-de-funcionario/#FuncionarioId        CatalogoFuncR GET
+/funcionarios/#FuncionarioId/apagar            ApagarFuncR POST
+/funcionario/editar/#FuncionarioId             EditarFuncR GET POST

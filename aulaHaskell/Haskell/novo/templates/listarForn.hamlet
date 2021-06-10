@@ -27,32 +27,36 @@
           <button type="button" class="btn text-light rounded-0 btnSair">sair
         <div class="col-12 mt-5 d-flex align-items-center divFormMain flex-column">
           <div class="col-8 d-flex align-items-center divContent bg-light flex-column pt-5 pb-5 rounded">
-            <h1 class="mb-3">Lista de produtos
+            <h1 class="mb-3">Lista de fornecedores
             <div class="col-10">
               <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">Nome
-                    <th scope="col">Marca
-                    <th scope="col">Preço
-                    <th scope="col">Descrição
+                    <th scope="col">Cnpj
+                    <th scope="col">Endereço
+                    <th scope="col">Telefone
+                    <th scope="col">Produto fornecido
+                    <th scope="col">Editar
                     <th scope="col">Excluir
-                $forall Entity pid prod <- produtos
+                $forall Entity fid forn <- fornecedores
                   <tbody>
                     <tr>
                       <td>
-                        #{produtoNome prod}
+                        #{fornecedorNome forn}
                       <td>
-                        #{produtoMarca prod}
+                        #{fornecedorCnpj forn}
                       <td>
-                        #{produtoPreco prod}
-                      <td style="word-break:break-word">
-                        #{produtoDescr prod}
+                        #{fornecedorEndereco forn}
                       <td>
-                        <a class="btn btn-primary text-light" href=@{EditarProdR pid}>
+                        #{fornecedorTelefone forn}
+                      <td>
+                        #{fornecedorProdutoFornecido forn}
+                      <td>
+                        <a class="btn btn-primary text-light" href=@{EditarFornR fid}>
                           Editar
                       <td>
-                        <form method=post action=@{ApagarProdR pid}>
+                        <form method=post action=@{ApagarFornR fid}>
                           <button class="btn btn-danger" type="submit">excluir
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous">

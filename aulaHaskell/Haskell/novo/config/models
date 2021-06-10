@@ -1,16 +1,15 @@
 User
-    nome   Text
     email  Text
     senha  Text
     UniqueEmail  email
     deriving Show
 
 Fornecedor
-    userId UserId
+    nome       Text
     cnpj       Text
     endereco   Text
     telefone   Text
-    produto    Text
+    produtoFornecido    Text
     deriving Show
 
 Produto
@@ -18,4 +17,11 @@ Produto
     marca   Text
     preco   Double
     descr   Textarea
+    deriving Show
+
+Funcionario
+    nome       Text
+    cpf        Text
+    endereco   Text
+    telefone   Text
     deriving Show

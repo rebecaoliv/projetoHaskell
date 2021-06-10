@@ -7,44 +7,32 @@
 module Handler.Produto where
 
 import Import
+import Handler.Auxiliar
 
-formProduto :: Form Produto
-formProduto = renderDivs $ Produto
-    <$> areq textField      (FieldSettings ""
-                                            (Just "Nome do produto")
-                                            (Just "n1")
-                                            Nothing
-                                            [("class","formName")]
-                            ) Nothing
-    <*> areq textField      "Marca do produto:"  Nothing
-    <*> areq doubleField    "Preço: " Nothing
-    <*> areq textareaField  "Descrição: " Nothing
+formProduto :: Maybe Produto -> Form Produto
+formProduto mp = renderDivs $ Produto
+    <$> areq textField      "Nome do produto:" (fmap produtoNome mp)
+    <*> areq textField      "Marca do produto:"  (fmap produtoMarca mp)
+    <*> areq doubleField    "Preço: " (fmap produtoPreco mp)
+    <*> areq textareaField  "Descrição: " (fmap produtoDescr mp)
 
 -- /produto ProdutoR GET POST
 
 getProdutoR :: Handler Html
 getProdutoR = do
-    (widget,_) <- generateFormPost formProduto
-    msg <- getMessage -- Handler (Maybe Text)
-    defaultLayout $ [whamlet|
-        $maybe mensa <- msg
-            <h2>
-                ^{mensa}  
-
-        <form action=@{ProdutoR} method=post>
-            ^{widget}
-            <input type="submit" value="Cadastrar">
-    |]
+  (widget,_) <- generateFormPost (formProduto Nothing)
+  msg <- getMessage
+  defaultLayout (formWidget widget msg ProdutoR "Cadastrar")
 
 postProdutoR :: Handler Html
 postProdutoR = do
-    ((result,_),_) <- runFormPost formProduto
+    ((result,_),_) <- runFormPost (formProduto Nothing)
     case result of
         FormSuccess produto -> do
             runDB $ insert produto
             setMessage [shamlet|
                 <div>
-                    PRODUTO INSERIDO COM SUCESSO
+                    Produto cadastrado com sucesso
             |]
             redirect ProdutoR
         _ -> redirect HomeR
@@ -54,8 +42,8 @@ postProdutoR = do
 -- /produto/#ProdutoId/apagar  ApagarProdR POST
 
 -- select * from produto where id = pid
-getCatalogoR :: ProdutoId -> Handler Html
-getCatalogoR pid = do
+getCatalogoProdR :: ProdutoId -> Handler Html
+getCatalogoProdR pid = do
     produto <- runDB $ get404 pid
     defaultLayout [whamlet|
         <h1>
@@ -74,11 +62,27 @@ getCatalogoR pid = do
 postApagarProdR :: ProdutoId -> Handler Html
 postApagarProdR pid = do
     runDB $ delete pid
-    redirect ListaProdR
+    redirect ListarProdR
 
 --select * from produto order by nome;
-getListaProdR :: Handler Html
-getListaProdR = do
-    -- [Entity 1 (Produto "Caneta" 2.20 ".."), Entity 2 (Produto "Lapis" 1.70 ".."),....]
+getListarProdR :: Handler Html
+getListarProdR = do
     produtos <- runDB $ selectList [] [Asc ProdutoNome]
     defaultLayout $(whamletFile "templates/listar.hamlet") 
+
+getEditarProdR :: ProdutoId -> Handler Html
+getEditarProdR pid = do 
+    produto <- runDB $ get404 pid
+    (widget,_) <- generateFormPost (formProduto (Just produto))
+    msg <- getMessage
+    defaultLayout (formWidget widget msg (EditarProdR pid) "Editar")
+
+postEditarProdR :: ProdutoId -> Handler Html
+postEditarProdR pid = do
+    _ <- runDB $ get404 pid 
+    ((result,_),_) <- runFormPost (formProduto Nothing)
+    case result of 
+      FormSuccess novoProduto -> do
+          runDB $ replace pid novoProduto
+          redirect ListarProdR
+      _ -> redirect HomeR

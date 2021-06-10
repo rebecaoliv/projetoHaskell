@@ -14,37 +14,19 @@ import Text.Cassius
 
 --getHomeR :: Handler Html
 --getHomeR = undefined
-getPage1R :: Handler Html
-getPage1R = do
-    defaultLayout $ do
-        [whamlet|
-            <h1>
-                PAGINA 1
-        |]
 
-getPage2R :: Handler Html
-getPage2R = do
-    defaultLayout $ do
-        [whamlet|
-            <h1>
-                PAGINA 2
-        |]
-
-getPage3R :: Handler Html
-getPage3R = do
-    defaultLayout $ do
-        [whamlet|
-            <h1>
-                PAGINA 3
-        |]
+formWidget :: Widget -> Maybe Html -> Route App -> Text -> Widget
+formWidget widget msg rota m = $(whamletFile "templates/form.hamlet")
 
 getHomeR :: Handler Html
 getHomeR = do
     defaultLayout $ do
-        --estatico
-        --toWidgetHead $(juliusFile "templates/home.julius")
-        --css/bootstrap.css
+        user <- lookupSession "_ID"
         addStylesheet (StaticR css_bootstrap_css)
         toWidgetHead $(cassiusFile "templates/home.cassius")
+        $(whamletFile "templates/bootstrap.hamlet")
+        -- $(whamletFile "templates/navbar.hamlet") 
         $(whamletFile "templates/home.hamlet") 
+
+        
         
